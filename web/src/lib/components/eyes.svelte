@@ -1,80 +1,194 @@
 <script lang="ts">
+  import * as brain from "brain.js";
+  import { onMount } from "svelte";
+
+  // --- 1. Svelte State ---
   let mouseX = $state(0);
   let mouseY = $state(0);
+  let isInside = $state(false);
   let svgElement = $state<SVGSVGElement>();
+  let trainingStatus = $state("Sleeping...");
 
-  // Configuration
-  const eyeSpacing = 35; // Distance from center
-  const eyeY = 45; // Vertical position
-  const eyeRadius = 30; // Outer eye size
-  const pupilRadius = 10; // Pupil size
-  const maxOffset = eyeRadius - pupilRadius - 2; // Constrain pupil inside eye
+  // The "Face" state controlled by the brain
+  let face = $state({
+    pLX: 0,
+    pLY: 0,
+    pRX: 0,
+    pRY: 0,
+    lidL: 1,
+    lidR: 1,
+    neckRoll: 0,
+  });
 
+  // --- 2. Brain Configuration ---
+  const historyWindow = 256;
+  let history = $state<number[][]>([]);
+  let modelVector = $state<number[]>([0, 0, 0, 0, 0, 0, 0, 1, 1, 0]);
+  const vectorSize = 10;
+
+  const net = new brain.recurrent.LSTMTimeStep({
+    inputSize: vectorSize,
+    outputSize: vectorSize,
+    hiddenLayers: [18, 18],
+  });
+
+  // --- 3. Training Logic ---
+  // Vector shape per timestep:
+  // [mouseX, mouseY, present, pLX, pLY, pRX, pRY, lidL, lidR, neckRoll]
+  function makeStep(
+    mouseXValue: number,
+    mouseYValue: number,
+    present: number,
+    pLX: number,
+    pLY: number,
+    pRX: number,
+    pRY: number,
+    lidL: number,
+    lidR: number,
+    neckRoll: number,
+  ) {
+    return [
+      mouseXValue,
+      mouseYValue,
+      present,
+      pLX,
+      pLY,
+      pRX,
+      pRY,
+      lidL,
+      lidR,
+      neckRoll,
+    ];
+  }
+
+  function trainBot() {
+    const trainingData: number[][][] = [
+      [
+        // Idle / autonomous wandering + blink while mouse absent
+        makeStep(0, 0, 0, 0.05, -0.03, 0.05, -0.03, 1, 1, 0.08),
+        makeStep(0, 0, 0, -0.08, 0.05, -0.08, 0.05, 1, 1, -0.05),
+        makeStep(0, 0, 0, 0.02, 0.08, 0.02, 0.08, 1, 1, 0.03),
+        makeStep(0, 0, 0, 0, 0, 0, 0, 0.2, 0.2, 0),
+        makeStep(0, 0, 0, -0.04, -0.06, -0.04, -0.06, 1, 1, -0.06),
+        makeStep(0, 0, 0, 0.07, 0.02, 0.07, 0.02, 1, 1, 0.05),
+      ],
+      [
+        // Mouse moves right/up and face follows
+        makeStep(-0.8, -0.4, 1, -0.75, -0.45, -0.75, -0.45, 1, 1, -0.22),
+        makeStep(-0.4, -0.2, 1, -0.4, -0.2, -0.4, -0.2, 1, 1, -0.12),
+        makeStep(0, 0, 1, 0, 0, 0, 0, 1, 1, 0),
+        makeStep(0.4, 0.2, 1, 0.4, 0.2, 0.4, 0.2, 1, 1, 0.12),
+        makeStep(0.8, 0.4, 1, 0.75, 0.45, 0.75, 0.45, 1, 1, 0.22),
+      ],
+      [
+        // Quick vertical scan while present
+        makeStep(0, -0.8, 1, 0, -0.75, 0, -0.75, 1, 1, -0.1),
+        makeStep(0, -0.4, 1, 0, -0.4, 0, -0.4, 1, 1, -0.05),
+        makeStep(0, 0, 1, 0, 0, 0, 0, 1, 1, 0),
+        makeStep(0, 0.4, 1, 0, 0.4, 0, 0.4, 1, 1, 0.05),
+        makeStep(0, 0.8, 1, 0, 0.75, 0, 0.75, 1, 1, 0.1),
+      ],
+    ];
+
+    trainingStatus = "Training...";
+    net.train(trainingData, {
+      iterations: 1200,
+      log: false,
+      errorThresh: 0.006,
+    });
+    history = [];
+    modelVector = [0, 0, 0, 0.02, -0.02, 0.02, -0.02, 1, 1, 0];
+    trainingStatus = "Online";
+  }
+
+  // --- 4. The Loop ---
   function handleMouseMove(e: MouseEvent) {
     if (!svgElement) return;
     const rect = svgElement.getBoundingClientRect();
-    // Get mouse position relative to SVG center (100, 100)
-    mouseX = e.clientX - (rect.left + rect.width / 2);
-    mouseY = e.clientY - (rect.top + rect.height / 2);
+    mouseX = (e.clientX - (rect.left + rect.width / 2)) / 100; // Normalized
+    mouseY = (e.clientY - (rect.top + rect.height / 2)) / 100;
+    isInside = true;
   }
 
-  // Logic to calculate individual eye offsets
-  function getPupilOffset(centerX: number, centerY: number) {
-    const dx = mouseX - (centerX - 100); // Adjusting for coordinate system
-    const dy = mouseY - (centerY - 100);
-    const angle = Math.atan2(dy, dx);
-    const distance = Math.min(Math.sqrt(dx * dx + dy * dy), 100); // Cap distance influence
+  onMount(() => {
+    trainBot();
 
-    // Map the distance to the constrained radius
-    const moveDist = (distance / 100) * maxOffset;
+    const interval = setInterval(() => {
+      const normalizedMouseX = Math.max(-1, Math.min(1, mouseX));
+      const normalizedMouseY = Math.max(-1, Math.min(1, mouseY));
 
-    return {
-      x: Math.cos(angle) * moveDist,
-      y: Math.sin(angle) * moveDist,
-    };
-  }
+      if (isInside) {
+        modelVector[0] = normalizedMouseX;
+        modelVector[1] = normalizedMouseY;
+        modelVector[2] = 1;
+      } else {
+        modelVector[2] = 0;
+      }
 
-  const leftPupil = $derived(getPupilOffset(100 - eyeSpacing, eyeY + 50));
-  const rightPupil = $derived(getPupilOffset(100 + eyeSpacing, eyeY + 50));
+      history = [...history, [...modelVector]].slice(-historyWindow);
+
+      const prediction = net.run(history) as number[];
+      if (prediction && prediction.length === vectorSize) {
+        modelVector = [...prediction];
+        if (isInside) {
+          modelVector[0] = normalizedMouseX;
+          modelVector[1] = normalizedMouseY;
+          modelVector[2] = 1;
+        } else {
+          modelVector[2] = 0;
+        }
+
+        face = {
+          pLX: (prediction[3] ?? 0) * 12,
+          pLY: (prediction[4] ?? 0) * 12,
+          pRX: (prediction[5] ?? 0) * 12,
+          pRY: (prediction[6] ?? 0) * 12,
+          lidL: Math.max(0.1, Math.min(1, prediction[7] ?? 1)),
+          lidR: Math.max(0.1, Math.min(1, prediction[8] ?? 1)),
+          neckRoll: (prediction[9] ?? 0) * 20,
+        };
+      }
+    }, 16);
+
+    return () => clearInterval(interval);
+  });
+
+  const eyeSpacing = 35;
+  const eyeY = 45;
 </script>
 
-<svelte:window onmousemove={handleMouseMove} />
+<svelte:window
+  onmousemove={handleMouseMove}
+  onmouseleave={() => (isInside = false)}
+  onblur={() => (isInside = false)}
+/>
 
-<div class="container">
-  <svg
-    bind:this={svgElement}
-    viewBox="0 0 200 200"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="25" y="25" width="150" height="150" rx="30" fill="#333" />
+<div class="status">{trainingStatus}</div>
 
-    <circle cx={100 - eyeSpacing} cy={eyeY + 50} r={eyeRadius} fill="white" />
-    <circle
-      cx={100 - eyeSpacing + leftPupil.x}
-      cy={eyeY + 50 + leftPupil.y}
-      r={pupilRadius}
-      fill="black"
-    />
+<svg
+  bind:this={svgElement}
+  viewBox="0 0 200 200"
+  style="transform: rotate({face.neckRoll}deg); transition: transform 0.1s linear;"
+>
+  <rect x="25" y="25" width="150" height="150" rx="30" fill="#333" />
 
-    <circle cx={100 + eyeSpacing} cy={eyeY + 50} r={eyeRadius} fill="white" />
-    <circle
-      cx={100 + eyeSpacing + rightPupil.x}
-      cy={eyeY + 50 + rightPupil.y}
-      r={pupilRadius}
-      fill="black"
-    />
-  </svg>
-</div>
+  <g transform="translate({100 - eyeSpacing}, {eyeY + 50})">
+    <ellipse rx="25" ry={25 * face.lidL} fill="white" />
+    <circle cx={face.pLX} cy={face.pLY} r="8" fill="black" />
+  </g>
+
+  <g transform="translate({100 + eyeSpacing}, {eyeY + 50})">
+    <ellipse rx="25" ry={25 * face.lidR} fill="white" />
+    <circle cx={face.pRX} cy={face.pRY} r="8" fill="black" />
+  </g>
+</svg>
+
+<button onclick={trainBot}>Retrain</button>
 
 <style>
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-  }
   svg {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
+    overflow: visible;
   }
 </style>
