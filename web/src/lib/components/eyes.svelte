@@ -76,7 +76,7 @@
 
         if (out) {
           const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-          const s = 0.25; // Smoothness
+          const s = 0.33; // Smoothness
 
           face = {
             pX: lerp(face.pX, out[0], s),

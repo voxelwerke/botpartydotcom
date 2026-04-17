@@ -1,48 +1,56 @@
 @font-face {
-	font-family: 'Signika';
-	font-style: normal;
-	font-weight: 300;
-	font-display: swap;
-	src: url('/fonts/signika/Signika-300.ttf') format('truetype');
+  font-family: "Signika";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/signika/Signika-300.ttf") format("truetype");
 }
 
 @font-face {
-	font-family: 'Signika';
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-	src: url('/fonts/signika/Signika-400.ttf') format('truetype');
+  font-family: "Signika";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/signika/Signika-400.ttf") format("truetype");
 }
 
 @font-face {
-	font-family: 'Signika';
-	font-style: normal;
-	font-weight: 500;
-	font-display: swap;
-	src: url('/fonts/signika/Signika-500.ttf') format('truetype');
+  font-family: "Signika";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/signika/Signika-500.ttf") format("truetype");
 }
 
 @font-face {
-	font-family: 'Signika';
-	font-style: normal;
-	font-weight: 600;
-	font-display: swap;
-	src: url('/fonts/signika/Signika-600.ttf') format('truetype');
+  font-family: "Signika";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/signika/Signika-600.ttf") format("truetype");
 }
 
 @font-face {
-	font-family: 'Signika';
-	font-style: normal;
-	font-weight: 700;
-	font-display: swap;
-	src: url('/fonts/signika/Signika-700.ttf') format('truetype');
+  font-family: "Signika";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/signika/Signika-700.ttf") format("truetype");
 }
 
 :root {
-	font-family: 'Signika', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    "Signika",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 
 body {
-	margin: 0;
-	font-family: inherit;
+  font-family: inherit;
+  font-size: 1.2rem;
+  color: #333;
+  line-height: 1.5;
 }
