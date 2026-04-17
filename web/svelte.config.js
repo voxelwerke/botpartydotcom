@@ -10,7 +10,7 @@ const config = {
 				'default-src': ['self'],
 				'connect-src': ['self'],
 				'img-src': ['self', 'data:', 'blob:'],
-				'style-src': ['self'],
+				'style-src': ['self', 'trusted-types-eval', 'unsafe-eval'],
 				'font-src': ['self'],
 				'object-src': ['none'],
 				'base-uri': ['none'],
