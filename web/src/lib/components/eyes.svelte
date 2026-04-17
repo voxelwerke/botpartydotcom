@@ -83,8 +83,8 @@
 
         const pLX = -x;
         const pLY = -y;
-        const pRX = x;
-        const pRY = y;
+        const pRX = -x;
+        const pRY = -y;
 
         steps.push(makeStep(x, y, 1, pLX, pLY, pRX, pRY, 1, 1, 0));
       }
@@ -106,7 +106,7 @@
             Math.random() * 2 - 1,
             1,
             1,
-            0,
+            Math.random() * 2 - 1,
           ),
         );
       }
@@ -146,6 +146,26 @@
     isInside = true;
   }
 
+  type Face = {
+    pLX: number;
+    pLY: number;
+    pRX: number;
+    pRY: number;
+    lidL: number;
+    lidR: number;
+    neckRoll: number;
+  };
+
+  function updateModel(face: Face) {
+    modelVector[3] = face.pLX;
+    modelVector[4] = face.pLY;
+    modelVector[5] = face.pRX;
+    modelVector[6] = face.pRY;
+    modelVector[7] = face.lidL;
+    modelVector[8] = face.lidR;
+    modelVector[9] = face.neckRoll;
+  }
+
   onMount(() => {
     void trainBot();
 
@@ -168,13 +188,16 @@
       const prediction = net.run(history) as number[];
 
       if (prediction && prediction.length === vectorSize) {
+        // Copy old prediction
+        modelVector = [...prediction];
+
         // Use a smoothing factor (0.1 = very smooth/slow, 0.5 = snappy)
         const lerp = (current: number, target: number, speed: number) =>
           current + (target - current) * speed;
         const clampPupil = (value: number) =>
           Math.max(-25, Math.min(25, value));
 
-        const speed = 0.5;
+        const speed = 0.1;
 
         // Smoothly transition the face values
         face = {
@@ -194,6 +217,8 @@
           ),
           neckRoll: lerp(face.neckRoll, (prediction[9] ?? 0) * 20, speed),
         };
+
+        updateModel(face);
       }
     }, 15);
 
@@ -281,7 +306,7 @@
 
   <ol class="model-vector">
     {#each modelVector as v}
-      <li>{v.toFixed(3)}</li>
+      <li>{v.toFixed(2)}</li>
     {/each}
   </ol>
 
@@ -290,7 +315,7 @@
   {#each history.slice(0, 4) as h}
     <ol class="model-vector">
       {#each h as v}
-        <li>{v.toFixed(3)}</li>
+        <li>{v.toFixed(2)}</li>
       {/each}
     </ol>
   {/each}
@@ -298,7 +323,7 @@
   <h3>Face Vector</h3>
   <ol class="model-vector">
     {#each Object.values(face) as v}
-      <li>{v.toFixed(3)}</li>
+      <li>{v.toFixed(2)}</li>
     {/each}
   </ol>
 </code>
