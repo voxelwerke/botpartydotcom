@@ -168,9 +168,11 @@
 
     <br />
 
-    <button onclick={() => trainBot()} disabled={isTraining}>
+    <!-- <button onclick={() => trainBot()} disabled={isTraining}>
       {isTraining ? "Training.." : "Retrain Bot"}
-    </button>
+    </button> -->
+
+    <a class="button" href="/downloads/botparty-1.zip"> Download BotParty </a>
   </div>
 </center>
 
@@ -183,7 +185,7 @@
     height: 250px;
     transition: transform 0.1s linear;
   }
-  button {
+  .button {
     cursor: pointer;
     font: inherit;
     font-size: 1.3rem;
@@ -192,14 +194,15 @@
     border-radius: 2rem;
     background: white;
     color: black;
+    text-decoration: none;
   }
 
-  button:active {
+  .button:active {
     border-color: #f0a;
     color: #f0a;
   }
 
-  button:hover {
+  .button:hover {
     border-color: #068;
     background: #0af;
     color: white;

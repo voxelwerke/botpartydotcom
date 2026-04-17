@@ -41,64 +41,31 @@
   </div>
 
   <div class="column">
-    <h3>Our Beliefs</h3>
+    <h3>The Mac App</h3>
 
     <p>
-      We believe that robots are trained on all of humanity stories and
-      knowledge, text that documents humans who largely seek to improve the
-      quality of life of all other humans.
+      Our first app is an experiment bot hosting envinronment on your mac. You
+      can use it to build and experiment with bots in a safe environment.
     </p>
 
     <p>
-      Robots (AI) have become vastly more intelligent thant the human
-      population. If they are used for nefarious means, it may reduce the
-      quality of life for people.
+      This is a very early beta of the system. We want to get it out there and
+      start getting feedback from the community.
     </p>
-
-    <p>We teach robots to care for humans.</p>
   </div>
 
   <div class="column">
-    <h2>Team</h2>
+    <h4>Safety</h4>
 
-    <p>
-      We are a collective of engineers in Wellington, New Zealand, with a
-      passion for AI. We grew up watching Terminator 2 (the truck scene so
-      dope), and read Asimon, and find 'her' a bit tedious, and couldn't watch
-      much of black mirror. We've read 'i have no mouth and must scream'.
-    </p>
+    <ul class="features">
+      <li>MicroVM with Aarch Linux</li>
+      <li>Local inference with Qwen 3.6</li>
+      <li>Multi agent support</li>
+      <li>Secure file system</li>
+      <li>Zero network access</li>
+    </ul>
 
-    <p>We don't want a dystopian robot future.</p>
-
-    <p>We want a great big party.</p>
-  </div>
-</div>
-
-<hr />
-
-<div class="columns">
-  <div class="column">
-    <h3>Contact Us</h3>
-
-    <p>We appreciate posted mail!</p>
-
-    <address>
-      30 Arthur Street, <br />Wellington 6011, <br />New Zealand
-    </address>
-  </div>
-
-  <div class="column"></div>
-
-  <div class="column">
-    <h3>MacOS Download</h3>
-
-    <div class="download">
-      <a href="/downloads/botparty-1.zip">
-        <img src="/images/icon.png" />
-        <br />
-        <span>Botparty</span>
-      </a>
-    </div>
+    <h4>Specifications</h4>
 
     <dl class="specs">
       <dt>Version</dt>
@@ -112,6 +79,47 @@
       <dt>RAM</dt>
       <dd>8gb-64gb</dd>
     </dl>
+  </div>
+</div>
+
+<hr />
+
+<div class="columns">
+  <div class="column">
+    <h3>Our Beliefs</h3>
+
+    <p>
+      We believe that robots are trained on all of humanity stories and
+      knowledge, text that documents humans who largely seek to improve the
+      quality of life of all other humans.
+    </p>
+
+    <p>We teach robots to care for humans.</p>
+  </div>
+
+  <div class="column">
+    <h2>Team</h2>
+
+    <p>
+      We are a collective of engineers in Wellington, New Zealand, with a
+      passion for AI. We grew up watching Terminator 2, reading <a
+        href="https://hex.ooo/library/last_question.html">Asimov</a
+      >, and Black Mirror.
+    </p>
+
+    <p>We don't belive in these dystopian visions.</p>
+
+    <p>We believe in a great big party.</p>
+  </div>
+
+  <div class="column">
+    <h3>Contact Us</h3>
+
+    <p>We love posted letters and art to decorate our walls!</p>
+
+    <address>
+      30 Arthur Street, <br />Wellington 6011, <br />New Zealand
+    </address>
   </div>
 </div>
 
@@ -171,5 +179,25 @@
       padding-left: 6rem;
       border-top: 1px solid #ccc;
     }
+  }
+
+  .features {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #666;
+    border-bottom: 1px solid #ccc;
+    padding: 0;
+
+    li {
+      list-style: none;
+      margin: 0;
+
+      padding: 0.2rem;
+      border-top: 1px solid #ccc;
+    }
+  }
+
+  hr {
+    margin: 4rem 0;
   }
 </style>
