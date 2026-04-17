@@ -18,10 +18,11 @@
   });
 
   // --- 2. Brain Configuration ---
-  // Using NeuralNetworkGPU for standard feedforward logic
-  const net = new brain.NeuralNetworkGPU({
+  // NeuralNetworkGPU breaks under production minification (gpu.js AST parser
+  // can't handle mangled variables). CPU NeuralNetwork is tiny-dataset fast.
+  const net = new brain.NeuralNetwork({
     hiddenLayers: [5],
-    activation: "tanh", // This allows the brain to output negative numbers!
+    activation: "tanh",
   });
 
   async function trainBot() {
