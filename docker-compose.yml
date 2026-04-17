@@ -4,21 +4,44 @@ services:
       context: ./strfry
     container_name: strfry
     restart: unless-stopped
-    ports:
-      - "7777:7777"
+    expose:
+      - "7777"
     volumes:
       - strfry-data:/var/lib/strfry
 
   web:
-    image: node:22-alpine
+    build:
+      context: ./web
     container_name: web
-    working_dir: /app
     restart: unless-stopped
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 3000"
-    ports:
-      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: "3000"
+      DATABASE_PATH: /data/app.db
+    expose:
+      - "3000"
     volumes:
-      - ./web:/app
+      - web-data:/data
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    depends_on:
+      - web
+      - strfry
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
 
 volumes:
   strfry-data:
+  web-data:
+  caddy-data:
+  caddy-config:
