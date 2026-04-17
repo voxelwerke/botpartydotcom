@@ -35,7 +35,14 @@ RUN apk add --no-cache \
     libsecp256k1 \
     libb2 \
     zstd \
-    libressl
+    libressl \
+    libressl3.8-libcrypto \
+    libressl3.8-libssl \
+    lmdb \
+    libsecp256k1 \
+    zstd-libs \
+    libstdc++ \
+    libgcc    
 
 COPY --from=builder /src/strfry/strfry /usr/local/bin/strfry
 COPY strfry.conf /etc/strfry.conf
