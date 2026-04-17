@@ -21,7 +21,7 @@
   });
 
   // --- 2. Brain Configuration ---
-  const historyWindow = 16;
+  const historyWindow = 32;
   let history = $state<number[][]>([]);
   let modelVector = $state<number[]>([0, 0, 0, 0, 0, 0, 0, 1, 1, 0]);
   const vectorSize = 10;
@@ -29,7 +29,7 @@
   const net = new brain.recurrent.LSTMTimeStep({
     inputSize: vectorSize,
     outputSize: vectorSize,
-    hiddenLayers: [18, 18],
+    hiddenLayers: [8, 8],
   });
 
   // --- 3. Training Logic ---
@@ -77,12 +77,12 @@
 
     const makeFollow = () => {
       const steps = [];
-      for (let a = 0; a < Math.PI * 2; a += Math.PI / 16) {
-        const x = Math.cos(a);
-        const y = Math.sin(a);
+      for (let a = 0; a < Math.PI * 2; a += 0.1) {
+        const x = Math.sin(a);
+        const y = Math.cos(a);
 
-        const pLX = x;
-        const pLY = y;
+        const pLX = -x;
+        const pLY = -y;
         const pRX = x;
         const pRY = y;
 
@@ -141,10 +141,8 @@
   function handleMouseMove(e: MouseEvent) {
     if (!svgElement) return;
     const rect = svgElement.getBoundingClientRect();
-    mouseX =
-      ((e.clientX - (rect.left + rect.width / 2)) / window.innerWidth) * 2; // Normalized
-    mouseY =
-      ((e.clientY - (rect.top + rect.height / 2)) / window.innerHeight) * 2;
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2; // Normalized
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
     isInside = true;
   }
 
@@ -153,16 +151,14 @@
 
     const interval = setInterval(() => {
       if (isTraining) return;
-      const normalizedMouseX = Math.max(-1, Math.min(1, mouseX));
-      const normalizedMouseY = Math.max(-1, Math.min(1, mouseY));
+      const nx = Math.max(-1, Math.min(1, mouseX));
+      const ny = Math.max(-1, Math.min(1, mouseY));
 
       if (isInside) {
-        modelVector[0] = normalizedMouseX;
-        modelVector[1] = normalizedMouseY;
+        modelVector[0] = nx;
+        modelVector[1] = ny;
         modelVector[2] = 1;
       } else {
-        modelVector[0] = -1;
-        modelVector[1] = -1;
         modelVector[2] = -1;
       }
 
@@ -175,15 +171,17 @@
         // Use a smoothing factor (0.1 = very smooth/slow, 0.5 = snappy)
         const lerp = (current: number, target: number, speed: number) =>
           current + (target - current) * speed;
+        const clampPupil = (value: number) =>
+          Math.max(-25, Math.min(25, value));
 
-        const speed = 0.2;
+        const speed = 0.5;
 
         // Smoothly transition the face values
         face = {
-          pLX: lerp(face.pLX, (prediction[3] ?? 0) * 12, speed),
-          pLY: lerp(face.pLY, (prediction[4] ?? 0) * 12, speed),
-          pRX: lerp(face.pRX, (prediction[5] ?? 0) * 12, speed),
-          pRY: lerp(face.pRY, (prediction[6] ?? 0) * 12, speed),
+          pLX: clampPupil(lerp(face.pLX, (prediction[3] ?? 0) * 12, speed)),
+          pLY: clampPupil(lerp(face.pLY, (prediction[4] ?? 0) * 12, speed)),
+          pRX: clampPupil(lerp(face.pRX, (prediction[5] ?? 0) * 12, speed)),
+          pRY: clampPupil(lerp(face.pRY, (prediction[6] ?? 0) * 12, speed)),
           lidL: lerp(
             face.lidL,
             Math.max(0.1, Math.min(1, prediction[7] ?? 1)),
@@ -197,7 +195,7 @@
           neckRoll: lerp(face.neckRoll, (prediction[9] ?? 0) * 20, speed),
         };
       }
-    }, 16);
+    }, 15);
 
     return () => clearInterval(interval);
   });
@@ -218,35 +216,91 @@
     viewBox="0 0 200 200"
     style="transform: rotate({face.neckRoll}deg); transition: transform 0.1s linear;"
   >
-    <rect x="25" y="25" width="150" height="150" rx="30" fill="#333" />
+    <defs>
+      <mask id="headCutoutMask">
+        <rect x="25" y="25" width="150" height="150" rx="30" fill="white" />
+        <ellipse
+          cx={100 - eyeSpacing}
+          cy={eyeY + 50}
+          rx="25"
+          ry={25 * face.lidL}
+          fill="black"
+        />
+        <ellipse
+          cx={100 + eyeSpacing}
+          cy={eyeY + 50}
+          rx="25"
+          ry={25 * face.lidR}
+          fill="black"
+        />
+      </mask>
+    </defs>
 
-    <g transform="translate({100 - eyeSpacing}, {eyeY + 50})">
-      <ellipse rx="25" ry={25 * face.lidL} fill="white" />
-      {#if !isTraining}
-        <circle cx={face.pLX} cy={face.pLY} r="8" fill="black" />
-      {/if}
-    </g>
+    {#if !isTraining}
+      <g>
+        <circle
+          cx={100 - eyeSpacing + face.pLX}
+          cy={eyeY + 50 + face.pLY}
+          r="8"
+          fill="black"
+        />
+        <circle
+          cx={100 + eyeSpacing + face.pRX}
+          cy={eyeY + 50 + face.pRY}
+          r="8"
+          fill="black"
+        />
+      </g>
+    {/if}
 
-    <g transform="translate({100 + eyeSpacing}, {eyeY + 50})">
-      <ellipse rx="25" ry={25 * face.lidR} fill="white" />
-      {#if !isTraining}
-        <circle cx={face.pRX} cy={face.pRY} r="8" fill="black" />}
-      {/if}
-    </g>
+    <rect
+      x="25"
+      y="25"
+      width="150"
+      height="150"
+      rx="30"
+      fill="#333"
+      mask="url(#headCutoutMask)"
+    />
   </svg>
-</center>
 
-<button onclick={() => void trainBot()} disabled={isTraining}>
-  {isTraining ? "Training..." : "Retrain"}
-</button>
+  <br />
+  <br />
+
+  <button onclick={() => void trainBot()} disabled={isTraining}>
+    {isTraining ? "Training..." : "Retrain"}
+  </button>
+</center>
 
 <code>
   {isInside}
   {mouseX}
   {mouseY}
-  {modelVector}
-  {history}
-  {face}
+
+  <h3>Input vector</h3>
+
+  <ol class="model-vector">
+    {#each modelVector as v}
+      <li>{v.toFixed(3)}</li>
+    {/each}
+  </ol>
+
+  <h3>History</h3>
+
+  {#each history.slice(0, 4) as h}
+    <ol class="model-vector">
+      {#each h as v}
+        <li>{v.toFixed(3)}</li>
+      {/each}
+    </ol>
+  {/each}
+
+  <h3>Face Vector</h3>
+  <ol class="model-vector">
+    {#each Object.values(face) as v}
+      <li>{v.toFixed(3)}</li>
+    {/each}
+  </ol>
 </code>
 
 <style>
@@ -256,7 +310,43 @@
     overflow: visible;
   }
 
-  code {
-    display: none;
+  button {
+    font: inherit;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    border: 4px solid #333;
+    border-radius: 0.6rem;
+    background: none;
+    color: #333;
+    width: 8rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    border-color: #f0a;
+    color: white;
+    background: #0af;
+  }
+
+  ol.model-vector {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  ol.model-vector li {
+    list-style: none;
+    text-align: center;
+    border: 1px solid #666;
+    border-right: none;
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
+  }
+
+  ol.model-vector li:last-child {
+    border-right: 1px solid #666;
   }
 </style>
