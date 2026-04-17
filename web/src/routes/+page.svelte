@@ -17,6 +17,4 @@
 
 {#if EyesComponent}
   <EyesComponent />
-{:else}
-  <p>Loading eyes...</p>
 {/if}
