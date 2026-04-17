@@ -93,8 +93,6 @@
       knowledge, text that documents humans who largely seek to improve the
       quality of life of all other humans.
     </p>
-
-    <p>We teach robots to care for humans.</p>
   </div>
 
   <div class="column">
@@ -106,10 +104,6 @@
         href="https://hex.ooo/library/last_question.html">Asimov</a
       >, and Black Mirror.
     </p>
-
-    <p>We don't belive in these dystopian visions.</p>
-
-    <p>We believe in a great big party.</p>
   </div>
 
   <div class="column">
