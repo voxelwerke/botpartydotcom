@@ -1,38 +1,41 @@
-FROM debian:bookworm-slim AS builder
+FROM alpine:3.20 AS builder
 
 ARG STRFRY_REF=master
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    g++ \
+RUN apk add --no-cache \
+    linux-headers \
     git \
-    libflatbuffers-dev \
-    liblmdb-dev \
-    libsecp256k1-dev \
-    libssl-dev \
-    libzstd-dev \
+    g++ \
     make \
-    pkg-config \
-    zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
+    perl \
+    pkgconfig \
+    libtool \
+    ca-certificates \
+    libressl-dev \
+    zlib-dev \
+    lmdb-dev \
+    flatbuffers-dev \
+    libsecp256k1-dev \
+    zstd-dev
 
 WORKDIR /src
 RUN git clone --depth 1 --branch "${STRFRY_REF}" https://github.com/hoytech/strfry.git
 
 WORKDIR /src/strfry
-RUN git submodule update --init && make setup-golpe && make -j2
+RUN git submodule update --init \
+    && make setup-golpe \
+    && make -j"$(nproc)"
 
-FROM debian:bookworm-slim
+FROM alpine:3.20
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apk add --no-cache \
     ca-certificates \
-    libflatbuffers2 \
-    liblmdb0 \
-    libsecp256k1-1 \
-    libssl3 \
-    libzstd1 \
-    zlib1g \
-    && rm -rf /var/lib/apt/lists/*
+    lmdb \
+    flatbuffers \
+    libsecp256k1 \
+    libb2 \
+    zstd \
+    libressl
 
 COPY --from=builder /src/strfry/strfry /usr/local/bin/strfry
 COPY strfry.conf /etc/strfry.conf
