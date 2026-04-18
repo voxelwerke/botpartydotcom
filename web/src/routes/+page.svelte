@@ -5,6 +5,9 @@
   // This holds the component constructor itself
   let EyesComponent = $state<any>(null);
 
+  const version = "1.2";
+  const releaseDate = "18-Apr-26";
+
   onMount(async () => {
     // Import the component dynamically
     const module = await import("$lib/components/eyes.svelte");
@@ -17,6 +20,13 @@
 {#if EyesComponent}
   <EyesComponent />
 {/if}
+
+<br />
+<center>
+  <a class="button" href="/downloads/botparty-{version}.zip">
+    Download BotParty {version}</a
+  >
+</center>
 
 <br />
 <br />
@@ -73,9 +83,9 @@
 
     <dl class="specs">
       <dt>Version</dt>
-      <dd>1.1</dd>
+      <dd>{version}</dd>
       <dt>Released</dt>
-      <dd>18-Apr-26</dd>
+      <dd>{releaseDate}</dd>
       <dt>OS</dt>
       <dd>MacOS 26 Tahoe</dd>
       <dt>CPU</dt>
@@ -217,5 +227,30 @@
 
   hr {
     margin: 4rem 0;
+  }
+
+  /* Button style */
+
+  .button {
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.3rem;
+    padding: 0.7rem 1.3rem;
+    border: 2px solid black;
+    border-radius: 2rem;
+    background: white;
+    color: black;
+    text-decoration: none;
+  }
+
+  .button:active {
+    border-color: #f0a;
+    color: #f0a;
+  }
+
+  .button:hover {
+    border-color: #068;
+    background: #0af;
+    color: white;
   }
 </style>

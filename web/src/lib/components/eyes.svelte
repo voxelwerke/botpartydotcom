@@ -166,14 +166,6 @@
         mask="url(#faceCutoutMask)"
       />
     </svg>
-
-    <br />
-
-    <!-- <button onclick={() => trainBot()} disabled={isTraining}>
-      {isTraining ? "Training.." : "Retrain Bot"}
-    </button> -->
-
-    <a class="button" href="/downloads/botparty-1.1.zip"> Download BotParty</a>
   </div>
 </center>
 
@@ -185,27 +177,5 @@
     width: 250px;
     height: 250px;
     transition: transform 0.1s linear;
-  }
-  .button {
-    cursor: pointer;
-    font: inherit;
-    font-size: 1.3rem;
-    padding: 0.7rem 1.3rem;
-    border: 2px solid black;
-    border-radius: 2rem;
-    background: white;
-    color: black;
-    text-decoration: none;
-  }
-
-  .button:active {
-    border-color: #f0a;
-    color: #f0a;
-  }
-
-  .button:hover {
-    border-color: #068;
-    background: #0af;
-    color: white;
   }
 </style>
