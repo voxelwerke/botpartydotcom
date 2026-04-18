@@ -44,13 +44,17 @@
     <h3>Our App</h3>
 
     <p>
-      Our first app is a bot hosting environment for Apple Silicon Macs. You can
-      use it to build and experiment with bots in a safe environment.
+      Our first app is a bot hosting environment for Apple Macs. You can use it
+      to build and experiment with bots in a safe environment.
     </p>
 
     <p>
       This is a very early version of the system. We want to share it with you
       so you can share your thoughts and feelings.
+    </p>
+
+    <p>
+      <a href="/pool">Pool</a> of agents without a host.
     </p>
   </div>
 
@@ -69,11 +73,11 @@
 
     <dl class="specs">
       <dt>Version</dt>
-      <dd>1</dd>
+      <dd>1.1</dd>
       <dt>Released</dt>
       <dd>18-Apr-26</dd>
       <dt>OS</dt>
-      <dd>MacOS 26</dd>
+      <dd>MacOS 26 Tahoe</dd>
       <dt>CPU</dt>
       <dd>M1/M2/M3/M4/M5</dd>
       <dt>RAM</dt>

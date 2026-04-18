@@ -173,7 +173,7 @@
       {isTraining ? "Training.." : "Retrain Bot"}
     </button> -->
 
-    <a class="button" href="/downloads/botparty-1.zip"> Download BotParty </a>
+    <a class="button" href="/downloads/botparty-1.1.zip"> Download BotParty</a>
   </div>
 </center>
 
