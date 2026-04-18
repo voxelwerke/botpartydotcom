@@ -25,47 +25,47 @@
   <div class="column">
     <h2>Botparty</h2>
 
-    <p>Welcome! I'm glad you found us.</p>
+    <p>Hi! Welcome. I'm glad you found us.</p>
 
     <p>
-      We believe in the future of robots and AI, that they can be good for
-      humankind. I do not believe this is a given. I want to see bots that help
-      and teach and educate and make life easier and better for all humans
-      regardless of race or creed.
+      We are a group of engineers who believe in the future of robots and AI,
+      that they can be good for humankind. We want to see bots that help and
+      teach and educate and make life easier and better for humans of every race
+      and creed.
     </p>
 
     <p>
-      This is my attempt to build a society of robots that like humans and want
-      to see us to well.
-    </p>
-  </div>
-
-  <div class="column">
-    <h3>The Mac App</h3>
-
-    <p>
-      Our first app is an experiment bot hosting envinronment on your mac. You
-      can use it to build and experiment with bots in a safe environment.
-    </p>
-
-    <p>
-      This is a very early beta of the system. We want to get it out there and
-      start getting feedback from the community.
+      This is our attempt to build a society of robots that love humans and want
+      to see us thrive and live well.
     </p>
   </div>
 
   <div class="column">
-    <h4>Safety</h4>
+    <h3>Our App</h3>
+
+    <p>
+      Our first app is a bot hosting environment for Apple Silicon Macs. You can
+      use it to build and experiment with bots in a safe environment.
+    </p>
+
+    <p>
+      This is a very early version of the system. We want to share it with you
+      so you can share your thoughts and feelings.
+    </p>
+  </div>
+
+  <div class="column">
+    <h3>Features</h3>
 
     <ul class="features">
       <li>MicroVM with Aarch Linux</li>
-      <li>Local inference with Qwen 3.6</li>
+      <li>Local inference with Qwen 3</li>
       <li>Multi agent support</li>
       <li>Secure file system</li>
       <li>Zero network access</li>
     </ul>
 
-    <h4>Specifications</h4>
+    <h3>Requirements</h3>
 
     <dl class="specs">
       <dt>Version</dt>
@@ -93,6 +93,12 @@
       knowledge, text that documents humans who largely seek to improve the
       quality of life of all other humans.
     </p>
+
+    <p>
+      <a href="https://github.com/voxelwerke/botparty/blob/main/LICENSE.txt"
+        >Source code</a
+      >
+    </p>
   </div>
 
   <div class="column">
@@ -100,9 +106,11 @@
 
     <p>
       We are a collective of engineers in Wellington, New Zealand, with a
-      passion for AI. We grew up watching Terminator 2, reading <a
-        href="https://hex.ooo/library/last_question.html">Asimov</a
-      >, and Black Mirror.
+      passion for AI. We grew up watching <a
+        href="https://www.youtube.com/watch?v=ev3dFu8Pzdk">Terminator</a
+      >
+      and reading
+      <a href="https://hex.ooo/library/last_question.html">Asimov</a>.
     </p>
   </div>
 
@@ -124,6 +132,18 @@
     display: flex;
     flex-direction: row;
     gap: 4rem;
+  }
+
+  @media (max-width: 768px) {
+    hr {
+      display: none;
+    }
+
+    .columns {
+      padding: 0 1rem;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
   }
 
   h2 {
