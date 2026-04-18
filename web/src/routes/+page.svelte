@@ -5,7 +5,7 @@
   // This holds the component constructor itself
   let EyesComponent = $state<any>(null);
 
-  const version = "1.2";
+  const version = "1.3";
   const releaseDate = "18-Apr-26";
 
   onMount(async () => {
@@ -75,8 +75,8 @@
       <li>MicroVM with Aarch Linux</li>
       <li>Local inference with Qwen 3</li>
       <li>Multi agent support</li>
-      <li>Secure file system</li>
-      <li>Zero network access</li>
+      <li>Isolated file system</li>
+      <li>Network access</li>
     </ul>
 
     <h3>Requirements</h3>
