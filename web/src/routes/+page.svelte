@@ -41,9 +41,15 @@
     </p>
 
     <p>
-      Developed by a small team in Wellington, New Zealand who think that AI companies should be
-      honest and that humans are awesome.
-    </p>
+      Each chat is a document. That means your chats live on your Mac and sync to your iPhone through iCloud automatically. You can use folders to organise your old chats, and back them up or print them out.
+      </p>
+      <p>
+      You can share a chat with anyone by sending them the document. They open it and keep talking to the same bot. It's all standard Mac stuff—save, open, search—it works the way you expect because it's how Macs work.
+      </p>
+      
+
+      
+
   </div>
 
   <div class="column">
@@ -54,20 +60,29 @@
       like how it acts, you can change it. And it will always stay the way you want it.
     </p>
 
-    <p>
-      You can save conversations locally and share them with friends. They can keep
-      chatting with the same AI you were using.
-    </p>
+      <p>
+      BotParty doesn't store your chats on some server. 
+      </p>
+      
+      <p>
+        They're yours. On your computer.
+      </p>
+      
 
+   
     <p>
       Your chats stay private. We enforce the 
       <a href="https://openrouter.ai/docs/guides/features/zdr">ZDR</a>
        flag so that the AI companies won't track or learn from your chats.
-      </p>
-
-      <p>
        No data is shared with botparty.com. 
     </p>
+
+
+    <p>
+      Developed by a small team focussed on keeping AI companies 
+      honest.
+    </p>
+
 
   </div>
 
