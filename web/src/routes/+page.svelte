@@ -1,12 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { prefersReducedMotion } from "svelte/motion";
 
   // This holds the component constructor itself
   let EyesComponent = $state<any>(null);
 
-  const version = "1.3";
-  const releaseDate = "18-Apr-26";
+  const version = "2.0";
+  const releaseDate = "6-May-26";
 
   onMount(async () => {
     // Import the component dynamically
@@ -35,36 +34,39 @@
   <div class="column">
     <h2>Botparty</h2>
 
-    <p>Hi! Welcome. I'm glad you found us.</p>
-
     <p>
-      We are a group of engineers who believe in the future of robots and AI,
-      that they can be good for humankind. We want to see bots that help and
-      teach and educate and make life easier and better for humans of every race
-      and creed.
+      A chat app for your Mac and iPhone. You talk to AI, but you know exactly
+      what you’re talking to. No hidden tricks. No company changing how it works
+      without telling you.
     </p>
 
     <p>
-      This is our attempt to build a society of robots that love humans and want
-      to see us thrive and live well.
+      We’re a small team in Wellington, New Zealand who think that AI companies should be
+      honest and that humans are awesome.
+    </p>
+
+    <p>
+      We don't log your chats, we don't
+      market to you, we don't track you.
     </p>
   </div>
 
   <div class="column">
-    <h3>Our App</h3>
+    <h3><a href="/downloads/botparty-{version}.zip">The BotParty App</a></h3>
 
     <p>
-      Our first app is a bot hosting environment for Apple Macs. You can use it
-      to build and experiment with bots in a safe environment.
+      Download BotParty and run it on your mac. Start chatting with the default AI. If you don't
+      like how it acts, you can change it. And it will always stay the way you want it.
     </p>
 
     <p>
-      This is a very early version of the system. We want to share it with you
-      so you can share your thoughts and feelings.
+      Everything you see is real. If it's using a certain set of instructions,
+      you can read them. If it switches models, you'll know. No surprises.
     </p>
 
     <p>
-      <a href="/pool">Pool</a> of agents without a host.
+      You can save conversations and share them with friends. They can keep
+      chatting with the same AI you were using.
     </p>
   </div>
 
@@ -72,70 +74,25 @@
     <h3>Features</h3>
 
     <ul class="features">
-      <li>MicroVM with Aarch Linux</li>
-      <li>Local inference with Qwen 3</li>
-      <li>Multi agent support</li>
-      <li>Isolated file system</li>
-      <li>Network access</li>
+      <li>You see exactly what instructions the AI is following</li>
+      <li>Create your own AI personalities and share them</li>
+      <li>No company secretly changing how the AI behaves</li>
+      <li>Works smoothly on Mac—no awkward web browser stuff</li>
     </ul>
+  </div>
 
-    <h3>Requirements</h3>
+  <div class="column">
+    <h3>What You Need</h3>
 
     <dl class="specs">
       <dt>Version</dt>
       <dd>{version}</dd>
       <dt>Released</dt>
       <dd>{releaseDate}</dd>
-      <dt>OS</dt>
-      <dd>MacOS 26 Tahoe</dd>
-      <dt>CPU</dt>
-      <dd>M1/M2/M3/M4/M5</dd>
-      <dt>RAM</dt>
-      <dd>8gb-64gb</dd>
+      <dt>Mac</dt>
+      <dd>Tahoe or newer</dd>
+
     </dl>
-  </div>
-</div>
-
-<hr />
-
-<div class="columns">
-  <div class="column">
-    <h3>Our Beliefs</h3>
-
-    <p>
-      We believe that robots are trained on all of humanity stories and
-      knowledge, text that documents humans who largely seek to improve the
-      quality of life of all other humans.
-    </p>
-
-    <p>
-      <a href="https://github.com/voxelwerke/botparty/blob/main/LICENSE.txt"
-        >Source code</a
-      >
-    </p>
-  </div>
-
-  <div class="column">
-    <h2>Team</h2>
-
-    <p>
-      We are a collective of engineers in Wellington, New Zealand, with a
-      passion for AI. We grew up watching <a
-        href="https://www.youtube.com/watch?v=ev3dFu8Pzdk">Terminator</a
-      >
-      and reading
-      <a href="https://hex.ooo/library/last_question.html">Asimov</a>.
-    </p>
-  </div>
-
-  <div class="column">
-    <h3>Contact Us</h3>
-
-    <p>We love posted letters and art to decorate our walls!</p>
-
-    <address>
-      30 Arthur Street, <br />Wellington 6011, <br />New Zealand
-    </address>
   </div>
 </div>
 
@@ -143,19 +100,15 @@
   .columns {
     max-width: 1000px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 4rem;
   }
 
   @media (max-width: 768px) {
-    hr {
-      display: none;
-    }
-
     .columns {
       padding: 0 1rem;
-      flex-direction: column;
+      grid-template-columns: 1fr;
       gap: 0.2rem;
     }
   }
@@ -166,7 +119,6 @@
 
   .column {
     flex: 1;
-    text-align: justify;
   }
 
   .download {
@@ -223,10 +175,6 @@
       padding: 0.2rem;
       border-top: 1px solid #ccc;
     }
-  }
-
-  hr {
-    margin: 4rem 0;
   }
 
   /* Button style */
