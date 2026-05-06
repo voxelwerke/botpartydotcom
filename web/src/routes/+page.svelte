@@ -41,7 +41,7 @@
     </p>
 
     <p>
-      Developed by a programmer in Wellington, New Zealand who think that AI companies should be
+      Developed by a small team in Wellington, New Zealand who think that AI companies should be
       honest and that humans are awesome.
     </p>
   </div>
@@ -60,10 +60,15 @@
     </p>
 
     <p>
-      We enforce the 
+      Your chats stay private. We enforce the 
       <a href="https://openrouter.ai/docs/guides/features/zdr">ZDR</a>
-       flag so that your models won't track or learn on your chats.
+       flag so that the AI companies won't track or learn from your chats.
+      </p>
+
+      <p>
        No data is shared with botparty.com. 
+    </p>
+
   </div>
 
   <div class="column">
