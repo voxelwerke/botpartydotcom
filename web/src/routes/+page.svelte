@@ -79,9 +79,7 @@
       <li>No company secretly changing how the AI behaves</li>
       <li>Works smoothly on Mac—no awkward web browser stuff</li>
     </ul>
-  </div>
 
-  <div class="column">
     <h3>What You Need</h3>
 
     <dl class="specs">
@@ -91,18 +89,25 @@
       <dd>{releaseDate}</dd>
       <dt>Mac</dt>
       <dd>Tahoe or newer</dd>
-
     </dl>
+  </div>
+
+  <div class="column screens-col">
+    <div class="screens">
+      <img class="screen screen-1" src="/images/screen-1.png" alt="BotParty chat screenshot" />
+      <img class="screen screen-2" src="/images/screen-2.png" alt="BotParty chat screenshot" />
+    </div>
   </div>
 </div>
 
 <style>
   .columns {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 2.5rem;
+    align-items: start;
   }
 
   @media (max-width: 768px) {
@@ -174,6 +179,55 @@
 
       padding: 0.2rem;
       border-top: 1px solid #ccc;
+    }
+  }
+
+  .screens-col {
+    display: flex;
+    justify-content: center;
+  }
+
+  .screens {
+    position: relative;
+    height: 680px;
+    width: 380px;
+  }
+
+  .screen {
+    position: absolute;
+    width: 340px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    transition: transform 0.3s ease;
+  }
+
+  .screen-1 {
+    top: 10px;
+    left: 40px;
+    z-index: 2;
+  }
+
+  .screen-2 {
+    top: 50px;
+    left: 0;
+    z-index: 1;
+  }
+
+  .screens:hover .screen-1 {
+    transform: translateX(120px) rotate(6deg);
+  }
+
+  .screens:hover .screen-2 {
+    transform: translateX(-120px) rotate(-6deg);
+  }
+
+  @media (max-width: 768px) {
+    .screens {
+      height: 480px;
+      width: 280px;
+    }
+    .screen {
+      width: 240px;
     }
   }
 
