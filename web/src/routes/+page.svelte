@@ -37,17 +37,12 @@
     <p>
       A chat app for your Mac and iPhone. You talk to AI, but you know exactly
       what you’re talking to. No hidden tricks. No company changing how it works
-      without telling you.
+      without telling you. 
     </p>
 
     <p>
-      We’re a small team in Wellington, New Zealand who think that AI companies should be
+      Developed by a programmer in Wellington, New Zealand who think that AI companies should be
       honest and that humans are awesome.
-    </p>
-
-    <p>
-      We don't log your chats, we don't
-      market to you, we don't track you.
     </p>
   </div>
 
@@ -60,23 +55,24 @@
     </p>
 
     <p>
-      Everything you see is real. If it's using a certain set of instructions,
-      you can read them. If it switches models, you'll know. No surprises.
+      You can save conversations locally and share them with friends. They can keep
+      chatting with the same AI you were using.
     </p>
 
     <p>
-      You can save conversations and share them with friends. They can keep
-      chatting with the same AI you were using.
-    </p>
+      We enforce the 
+      <a href="https://openrouter.ai/docs/guides/features/zdr">ZDR</a>
+       flag so that your models won't track or learn on your chats.
+       No data is shared with botparty.com. 
   </div>
 
   <div class="column">
     <h3>Features</h3>
 
     <ul class="features">
-      <li>You see exactly what instructions the AI is following</li>
+      <li>You control exactly what instructions the AI is following</li>
       <li>Create your own AI personalities and share them</li>
-      <li>No company secretly changing how the AI behaves</li>
+      <li>No hidden prompts secretly changing how the AI behaves</li>
       <li>Works smoothly on Mac—no awkward web browser stuff</li>
     </ul>
 
@@ -87,7 +83,7 @@
       <dd>{version}</dd>
       <dt>Released</dt>
       <dd>{releaseDate}</dd>
-      <dt>Mac</dt>
+      <dt>MacOS</dt>
       <dd>Tahoe or newer</dd>
     </dl>
   </div>
